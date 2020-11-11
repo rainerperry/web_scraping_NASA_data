@@ -1,7 +1,9 @@
 from splinter import Browser
-from bs4 import BeautifulSoup as bs
+from bs4 import BeautifulSoup
+import requests
+from splinter import Browser
 import time
-
+import pandas as pd
 
 def init_browser():
     # @NOTE: Replace the path with your actual path to the chromedriver
@@ -11,7 +13,7 @@ def init_browser():
 
 def scrape_info():
     browser = init_browser()
-
+    scraped_mars = {}
     # URL OF NASA website to be scraped
     url = "https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
     browser.visit(url)
@@ -20,7 +22,7 @@ def scrape_info():
 
     # Scrape page into Soup
     html = browser.html
-    soup = bs(html, "html.parser")
+    soup = BeautifulSoup(html, "html.parser")
 
 
     # find the relevant class items for the title and scrape it
@@ -31,30 +33,64 @@ def scrape_info():
     #find the relevatn class items for paragraph and scrape them
     paragraph = results.find('div', class_="article_teaser_body").text
 
+    #store data in dictionary
+    scraped_mars["title"] = title
+    scraped_mars["paragraph"] = paragraph
 
+    #Scrape fatured image
+    url = 'https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars'
+    browser.visit(url)
+    browser.click_link_by_partial_text('FULL IMAGE')
+    time.sleep(5)
+    browser.click_link_by_partial_text('more info')
+    time.sleep(5)
+    html = browser.html
+    soup = BeautifulSoup(html, 'html.parser')
+    image_url = soup.find('figure', class_='lede')
+    image_link = image_url.a["href"]
+    featured_image_url = 'https://www.jpl.nasa.gov' + image_link
 
-    # Get the average temps
-    avg_temps = soup.find('div', id='weather')
+    scraped_mars["featured_image_url"] = featured_image_url
 
-    # Get the min avg temp
-    min_temp = avg_temps.find_all('strong')[0].text
+    #add scraped image to dictionary?
 
-    # Get the max avg temp
-    max_temp = avg_temps.find_all('strong')[1].text
+    #Scrape Mars Facts
+    url = 'https://space-facts.com/mars'
+    mars_facts = pd.read_html(url)
+    df = mars_facts[0]
+    mars_details = df.to_html()
 
-    # BONUS: Find the src for the sloth image
-    relative_image_path = soup.find_all('img')[2]["src"]
-    sloth_img = url + relative_image_path
+    scraped_mars["mars_details"] = mars_details
 
-    # Store data in a dictionary
-    costa_data = {
-        "sloth_img": sloth_img,
-        "min_temp": min_temp,
-        "max_temp": max_temp
-    }
+    #Scrape Mars Hemispheres & Images
+
+    # url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    # response = requests.get(url)
+    # soup = BeautifulSoup(response.text, 'html.parser').find_all("a", class_="itemLink product-item")
+    # hemi_titles = []
+    # for i in soup:
+    #     title = i.find("h3").text
+    #     hemi_titles.append(title)
+    #
+    # url = 'https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
+    # browser.visit(url)
+    # hemi_list = []
+    #
+    # for title in range(len(hemi_titles)):
+    #     dictionary = {}
+    #
+    #     browser.find_by_css("a.product-item h3")[title].click()
+    #
+    #     step1 = browser.links.find_by_text('Sample').first
+    #
+    #     dictionary['img_url'] = step1['href']
+    #     dictionary['title'] = browser.find_by_css("h2.title")
+    #
+    #     hemi_list.append(dictionary)
+    #     browser.back()
 
     # Close the browser after scraping
     browser.quit()
 
     # Return results
-    return costa_data
+    return scraped_mars

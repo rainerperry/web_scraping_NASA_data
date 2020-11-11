@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div class="container ">
+    <div class="jumbotron text-center">
+      <h1>Mission to Mars</h1>
+    <a href="/scrape" class="button">Click here to scrape Mars Data</a>
+    </div>
+    <div class = "row" id="mars-news">
+      <div class = col-md-12>
+        <h2>  Latest Mars News</h2>
+          <ul>
+              <li>{{mars_html['title']}}</li>
+              <li>{{mars_html['paragraph']}}</li>
+          </ul>
+      </div>
+    </div>
+          <div class = "row" id="mars-image">
+      <div class = col-md-8>
+        <h2>  Mars Featured Image </h2>
+          <img src="{{mars_html.featured_image_url | default('static/images/error.png', true)}}" class="img-responsive"
+         alt="">
+      </div>
+          </div>
+</body>
+</html>
+
