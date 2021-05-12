@@ -10,12 +10,12 @@ Building a web application that scrapes various websites for data related to the
 - Assigning the text to variables that can be referenced later.
 - Visiting the url for JPL Featured Space Image (https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars).
 - Using splinter to navigate the site and find the image url for the current Featured Mars Image and assign the url string 
-- Making sure to find the image url
+- Making sure to find the image url.
 - Making sure to save a complete url string for this image.
 - Visiting the Mars Facts webpage (https://space-facts.com/mars/) and using Pandas to scrape the table containing facts about the planet including Diameter, Mass, etc.
 - Using Pandas to convert the data to a HTML table string.
 - Visiting the USGS Astrogeology site (https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars) to obtain high resolution images for each of Mar's hemispheres.
-- Saving both the image url string for the full resolution hemisphere image, and the Hemisphere title containing the hemisphere name, using a Python dictionary 
+- Saving both the image url string for the full resolution hemisphere image, and the Hemisphere title containing the hemisphere name, using a Python dictionary. 
 - Appending the dictionary with the image url string and the hemisphere title to a list.
 
 ### MongoDB and Flask Application
