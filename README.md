@@ -22,7 +22,7 @@ Building a web application that scrapes various websites for data related to the
 
 -Using MongoDB with Flask templating to create a new HTML page that displays all of the information that was scraped from the URLs above.
 -Starting by converting Jupyter notebook into a Python script that will execute all of your scraping code from above and return one Python dictionary containing all of the scraped data.
--Creating a route cthat will import the `scrape_mars.py` script and call the `scrape` function.
+-Creating a route cthat will import the py script and call the scrape function.
 -Storing the return value in Mongo as a Python dictionary.
--Creating a root route `/` that will query the Mongo database and pass the mars data into an HTML template to display the data.
--Creating a template HTML file called `index.html` that will take the mars data dictionary and display all of the data in the appropriate HTML elements.
+-Creating a root route that will query the Mongo database and pass the mars data into an HTML template to display the data.
+-Creating a template HTML file that will take the mars data dictionary and display all of the data in the appropriate HTML elements.
